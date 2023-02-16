@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width='device-width', initial-scale=1.0">
+    <title>Pizza</title>
+</head>
+<body class="d-flex flex-column h-100 main-bg">
+
+    <!-- Navbar -->
+    <nav class="navbar fixed-top navbar-expand-lg">
+        <a class="navbar-brand" href="{% url 'home' %}" id="brand">Pizza</a>
+        <!-- Collapsible icon for smaller screens -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <img src="" alt="menu toggle" />
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item light-text">
+                    <!-- Display different style if link is active -->
+                    <a class="nav-link {% if request.resolver_match.url_name == 'home' %}
+                    red-text {% else %} text-white {% endif %}" href="{% url 'home' %}">Home</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle {% if request.resolver_match.url_name == 'menus' %}
+                    red-text {% else %} text-white {% endif %}" href="{% url 'menus' %}" id="navbarDropdown"
+                        role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Menus
+                    </a>
+                    <!-- Dropdown for the different menus options -->
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item {% if request.resolver_match.url_name == 'food_menu' %}
+                             {% endif %}" href="{% url 'food_menu' %}">Food</a>
+                        </li>
+                        <li><a class="dropdown-item  {% if request.resolver_match.url_name == 'drinks_menu' %}
+                           {% endif %}" href="{% url 'drinks_menu' %}">Drinks</a>
+                        </li>
+                        <li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.resolver_match.url_name == 'reservations' %}
+                    red-text {% else %} text-white {% endif %}" href="{% url 'reservations' %}">Reservations</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.resolver_match.url_name == 'contact' %}
+                    red-text {% else %} text-white {% endif %}" href="{% url 'contact' %}">Contact Us</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav">
+                {% if user.is_authenticated %}
+                <!-- Display manage reservations, edit customer details & logout option if user is logged in -->
+                <li class="nav-item ml-auto">
+                    <a class="nav-link {% if request.resolver_match.url_name == 'manage_reservations' %}
+                    red-text {% else %} text-white {% endif %}" href="{% url 'manage_reservations' %}">Manage
+                        Reservations</a>
+                </li>
+                <li class="nav-item ml-auto">
+                    <a class="nav-link {% if request.resolver_match.url_name == 'edit_customer_details' %}
+                    red-text {% else %} text-white {% endif %}" href="{% url 'edit_customer_details' %}">Update
+                        Details</a>
+                </li>
+                <li class="nav-item ml-auto">
+                    <a class="nav-link {% if request.resolver_match.url_name == 'account_logout' %}
+                    red-text {% else %} text-white {% endif %}" href="{% url 'account_logout' %}">Logout</a>
+                </li>
+                <!-- If user is not logged in display Register & Login -->
+                {% else %}
+                <li class="nav-item ml-auto">
+                    <a class="nav-link {% if request.resolver_match.url_name == 'account_signup' %}
+                    red-text {% else %} text-white {% endif %}" href="{% url 'account_signup' %}">Register</a>
+                </li>
+                <li class="nav-item ml-auto">
+                    <a class="nav-link {% if request.resolver_match.url_name == 'account_login' %}
+                    red-text {% else %} text-white {% endif %}" href="{% url 'account_login' %}">Login</a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+
+    </nav>
+
+
+    <!-- Messages/Alerts -->
+    <div class="container">
+        <div class="row mt-3">
+            <div class="col-md-8 offset-md-2 text-center">
+                {% for message in messages %}
+                <div class="alert {{ message.tags }} alert dismissable fade show" id="msg" role="alert">
+                    {{ message | safe }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                    </button>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% block content%}
+    <!-- Content Goes here -->
+    {% endblock content %}
+
+    <!-- Footer -->
+    <div>
+
+        <footer class="text-center footer">
+            <div>
+                <!-- Section: Social media -->
+                <section class="footer-light">
+                    <!-- Facebook -->
+                    <a class="btn btn-link btn-floating btn-lg text-dark m-1" href="https://facebook.com"
+                        target="_blank" rel="noopener" role="button" data-mdb-ripple-color="dark"><i
+                            class="fab fa-facebook-f"></i></a>
+
+                    <!-- Twitter -->
+                    <a class="btn btn-link btn-floating btn-lg text-dark m-1" href="https://twitter.com" target="_blank"
+                        rel="noopener" role="button" data-mdb-ripple-color="dark"><i class="fab fa-twitter"></i></a>
+
+                    <!-- Google -->
+                    <a class="btn btn-link btn-floating btn-lg text-dark m-1" href="https://google.com" target="_blank"
+                        rel="noopener" role="button" data-mdb-ripple-color="dark"><i class="fab fa-google"></i></a>
+
+                    <!-- Instagram -->
+                    <a class="btn btn-link btn-floating btn-lg text-dark m-1" href="https://instagram.com"
+                        target="_blank" rel="noopener" role="button" data-mdb-ripple-color="dark"><i
+                            class="fab fa-instagram"></i></a>
+                </section>
+            </div>
+            <!-- Copyright -->
+            <div class="text-center text-dark p-3 copyright" style="background-color: rgba(0, 0, 0, 0.2);">
+                © 2023  Copyright Aaron Anderson   
+
+            </div>
+            <!-- Copyright -->
+        </footer>
+</body>
+</html>
